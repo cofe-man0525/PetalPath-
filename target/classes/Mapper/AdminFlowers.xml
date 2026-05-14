@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.explore.xianhuaback.Mapper.FlowersMapper">
+
+
+    <insert id="insertImageUrl" parameterType="string">
+        INSERT INTO adminflowers(image_url)
+        VALUES(#{value})
+    </insert>
+
+    <update id="insertFlowers" parameterType="map">
+        update adminflowers
+        set
+            product_name = #{flowersAdd.GoodsItem},
+            category = #{flowersAdd.GoodsSort},
+            price = #{flowersAdd.GoodsPrice},
+            number = #{flowersAdd.GoodsNumber},
+            sales_count = #{flowersAdd.SalesNumber},
+            status = #{flowersAdd.status},
+            created_time = NOW()
+        where id = #{id}
+
+    </update>
+<!--    条件查询的情况解决-->
+    <sql id="whereCondition">
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (product_name LIKE CONCAT('%', #{keyword}, '%')
+                <!-- 如果有多个搜索字段，可以继续添加 OR -->
+                <!-- OR description LIKE CONCAT('%', #{keyword}, '%') -->
+                )
+            </if>
+            <if test="category != null and category != ''">
+                AND category = #{category}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+    </sql>
+<!--    //查询总条数-->
+    <select id="getTotalList" parameterType="com.explore.xianhuaback.Entity.PageGet"
+            resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM adminflowers
+        <include refid="whereCondition" />
+    </select>
+
+<!--    分页查询情况-->
+    <select id="getSelectList"  parameterType="com.explore.xianhuaback.Entity.PageGet"
+            resultType="com.explore.xianhuaback.Entity.FlowersGetVO">
+     select
+         id,
+         product_name AS GoodsName,
+         category,
+         image_url AS imageUrl,
+         price AS GoodsPrice,
+         number AS GoodsNumber,
+         sales_count AS SalesNumber,
+         status,
+         created_time AS createdTime
+        from adminflowers
+        <include refid="whereCondition" />
+        ORDER BY id DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+<!--    查询数据情况-->
+    <select id="getByListId">
+        select
+            id,
+            product_name AS GoodsName,
+            category,
+            image_url AS imageUrl,
+            price AS GoodsPrice,
+            number AS GoodsNumber,
+            sales_count AS SalesNumber,
+            status,
+            created_time AS createdTime
+        from adminflowers
+        where id=#{id}
+    </select>
+
+    <update id="editUploadImageUrl">
+        update adminFlowers
+        set image_url=#{url}
+        where id=#{id}
+    </update>
+
+    <update id="editList"  parameterType="com.explore.xianhuaback.Entity.AdminFlowers.EditList">
+    update  adminFlowers
+    set product_name=#{goodsName},
+        category=#{goodsSort},
+        price=#{goodsPrice},
+        number=#{goodsNumber}
+       where id=#{id}
+
+    </update>
+
+</mapper>

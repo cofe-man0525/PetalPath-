@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.explore.xianhuaback.Mapper.user.IndexUserMapper">
+
+<!--    //地址的编辑操作-->
+    <update id="editSaveAddress" parameterType="com.explore.xianhuaback.DTO.UserLoginDTO.UserAddressEditDTO">
+        UPDATE user_address
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="city != null and city != ''">
+                city = #{city},
+            </if>
+            <if test="detail != null and detail != ''">
+                detail_address = #{detail},
+            </if>
+            <if test="isDefault != null">
+                is_default = #{isDefault},
+            </if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id} AND user_id = #{userId}
+    </update>
+
+<!--    //进行数据的插入的情况-->
+    <insert id="addAddress" parameterType="com.explore.xianhuaback.DTO.UserLoginDTO.UserAddressEditDTO"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user_address (
+            user_id,
+            name,
+            phone,
+            city,
+            detail_address,
+            is_default,
+            create_time,
+            update_time
+        ) VALUES (
+                     #{userId},
+                     #{name},
+                     #{phone},
+                     #{city},
+                     #{detail},
+                     #{isDefault},
+                     NOW(),
+                     NOW()
+                 )
+    </insert>
+
+    <!-- 设置默认地址 -->
+    <update id="editAddressIsDefault">
+        UPDATE user_address
+        SET is_default = CASE
+                             WHEN id = #{id} THEN 1
+                             ELSE 0
+            END,
+            update_time = NOW()
+        WHERE user_id = #{userId}
+    </update>
+
+    <insert id="insertPointsSign">
+        INSERT INTO user_sign_record (user_id, sign_date, sign_time, points)
+        VALUES (#{userId}, NOW(),NOW(), 5)
+    </insert>
+
+<!--    //进行查询的历史积分的情况-->
+    <select id="getHistoryPoints" resultType="com.explore.xianhuaback.Entity.userIndex.UserIndexSignVO">
+        SELECT * FROM user_sign_record
+        WHERE user_id = #{userId}
+          AND sign_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+        ORDER BY sign_date DESC
+    </select>
+
+</mapper>

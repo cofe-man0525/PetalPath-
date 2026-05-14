@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.explore.xianhuaback.Mapper.user.LoginUserMapper">
+
+
+    <insert id="insertUserMessage" parameterType="long">
+        INSERT INTO userTotalNumber (
+            user_id,
+            total_points,
+            total_orders,
+            total_coupons,
+            total_appointments,
+            total_activities,
+            cart_items_count,
+            total_messages,
+            total_visits_activities
+        ) VALUES (
+                     #{userId},
+                     0, 0, 0, 0, 0, 0, 0, 0
+                 )
+    </insert>
+
+</mapper>

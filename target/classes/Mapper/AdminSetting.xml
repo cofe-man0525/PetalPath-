@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.explore.xianhuaback.Mapper.SettingAdminMapper">
+
+    <!-- 修改店铺配置并返回修改后的数据 -->
+    <update id="editSetting" parameterType="com.explore.xianhuaback.Entity.AdminSetting.AdminSetting">
+        UPDATE setting
+        SET
+            shop_name = #{shopName},
+            contact_email = #{contactEmail},
+            contact_phone = #{contactPhone},
+            shop_address = #{shopAddress},
+            shop_description = #{shopDescription},
+            is_open = #{isOpen},
+            business_start_time = #{startTime},
+            business_end_time = #{endTime},
+            ai_agent_enabled = #{aiStart},
+            created_at= NOW(),
+            updated_at = NOW()
+        where id=1
+    </update>
+
+    <select id="getListById"  resultType="com.explore.xianhuaback.Entity.AdminSetting.SettingVO">
+        SELECT
+        id,
+        shop_name AS shopName,
+        contact_email AS contactEmail,
+        contact_phone AS contactPhone,
+        shop_address AS shopAddress,
+        shop_description AS shopDescription,
+        is_open AS isOpen,
+        business_start_time AS startTime,      <!-- 关键：别名改为 startTime -->
+        business_end_time AS endTime,          <!-- 关键：别名改为 endTime -->
+        ai_agent_enabled AS aiStart,           <!-- 关键：别名改为 aiStart -->
+        created_at AS createdAt,
+        updated_at AS updatedAt
+        FROM setting
+        WHERE id = 1
+
+    </select>
+</mapper>

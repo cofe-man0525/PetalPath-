@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.explore.xianhuaback.Mapper.user.AppointmentUserMapper">
+
+    <!-- 查询用户当月预约次数 -->
+    <select id="countByIdMounth" resultType="int">
+        SELECT COUNT(*)
+        FROM appointmentUser
+        WHERE user_id = #{userId}
+          AND appointment_date >= DATE_FORMAT(#{date}, '%Y-%m-01')
+          AND appointment_date &lt;= LAST_DAY(#{date})
+    </select>
+
+    <!-- 插入预约记录 -->
+    <insert id="insertappointment" parameterType="com.explore.xianhuaback.Entity.AppointmentUser.AppointmentUser">
+        INSERT INTO appointmentUser (
+            user_id,
+            appointment_type,
+            appointment_date,
+            appointment_time,
+            create_time,
+            name,
+            remark,
+            phone
+        ) VALUES (
+                     #{userId},
+                     #{appointmentType},
+                     #{appointmentDate},
+                     #{appointmentTime},
+                     #{createTime},
+                     #{name},
+                     #{remark},
+                     #{phone}
+                 )
+    </insert>
+
+    <!-- 更新每日统计表（没有就插入，有就 total_count + 1） -->
+    <update id="updateDailyStats">
+        INSERT INTO daily_appointment_stats (appointment_date, total_count, max_capacity, update_time)
+        VALUES (#{date}, 1, 10, NOW())
+            ON DUPLICATE KEY UPDATE
+                                 total_count = total_count + 1,
+                                         version = version + 1,
+                                 update_time = NOW()
+    </update>
+
+
+</mapper>

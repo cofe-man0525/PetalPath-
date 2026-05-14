@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.explore.xianhuaback.Mapper.user.UserActivityMapper">
+
+    <insert id="insertUserActivity" parameterType="com.explore.xianhuaback.Entity.ActivityUser.ActivityUser">
+        INSERT INTO user_activity (
+            user_id,
+            activity_id,
+            image_url,
+            activity_theme,
+            activity_detail,
+            activity_time,
+            activity_type,
+            location,
+            points_obtained,
+            click_count,
+            signup_time,
+            created_at
+        ) VALUES (
+                     #{userId},
+                     #{activityId},
+                     #{imageUrl},
+                     #{themeName},
+                     #{description},
+                     #{startTime},
+                     #{type},
+                     #{location},
+                     0,
+                     0,
+                     NOW(),
+                     NOW()
+                 )
+    </insert>
+
+</mapper>

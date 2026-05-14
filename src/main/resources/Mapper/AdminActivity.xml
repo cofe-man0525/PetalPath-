@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.explore.xianhuaback.Mapper.ActivityMapper">
+
+    <insert id="insertUrlImages" parameterType="string">
+        insert into activity(
+            image_url
+        ) values (
+                  #{imageUrl}
+         )
+    </insert>
+
+    <!-- 插入活动信息，返回Boolean值 -->
+    <update id="IdInsertList" parameterType="com.explore.xianhuaback.Entity.AdminAddActivity.AddActivity"
+            useGeneratedKeys="true" keyProperty="id">
+        UPDATE activity
+        SET
+            theme_name = #{themeName},
+            type = #{type},
+            status = #{status},
+            description = #{description},
+            start_time = #{startTime},
+            end_time = #{endTime},
+            location = #{location},
+            max_attendees = #{maxAttendees},
+            updated_at = NOW(),
+            created_at=NOW()
+        WHERE id = #{id}
+    </update>
+
+    <select id="SelectInput" parameterType="com.explore.xianhuaback.Entity.AdminAddActivity.SelectInput">
+        select * from activity
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="topInput != null and topInput != ''">
+                AND theme_name LIKE CONCAT('%', #{topInput}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- mapper/ActivityMapper.xml -->
+    <update id="upDataDataList" parameterType="com.explore.xianhuaback.Entity.AdminAddActivity.AddActivity">
+        UPDATE activity
+        <set>
+            <if test="themeName != null and themeName != ''">
+                theme_name = #{themeName},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="startTime != null and startTime != ''">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null and endTime != ''">
+                end_time = #{endTime},
+            </if>
+            <if test="location != null and location != ''">
+                location = #{location},
+            </if>
+            <if test="maxAttendees != null">
+                max_attendees = #{maxAttendees},
+            </if>
+            updated_at = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+
+</mapper>

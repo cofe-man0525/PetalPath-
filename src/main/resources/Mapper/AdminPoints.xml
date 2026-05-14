@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.explore.xianhuaback.Mapper.PointsMapper">
+
+    <insert id="insertImageUrl" parameterType="string" >
+        INSERT INTO adminPoints (image_url)
+        VALUES (#{newUrl})
+    </insert>
+
+    <select id="getList"  parameterType="com.explore.xianhuaback.Entity.AdminPoints.AdminPointsVO">
+        SELECT
+            id,
+            image_url as imageUrl,
+            point_name as pointName,
+            point_required as pointQuery,
+            point_number as pointNumber,
+            point_description as pointDescription,
+            status,
+            DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as createdAt,
+            DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updatedAt
+        FROM adminPoints
+    </select>
+
+    <select id="searchByKeyword" resultType="com.explore.xianhuaback.Entity.AdminPoints.AdminPointsVO">
+        SELECT
+            id,
+            image_url as imageUrl,
+            point_name as pointName,
+            point_required as pointQuery,
+            point_number as pointNumber,
+            point_description as pointDescription,
+            status,
+            DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as createdAt,
+            DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updatedAt
+        FROM adminPoints
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    point_name LIKE CONCAT('%', #{keyword}, '%')
+                    OR point_description LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="getById" resultType="com.explore.xianhuaback.Entity.AdminPoints.AdminPointsVO">
+        SELECT
+            id,
+            image_url as imageUrl,
+            point_name as pointName,
+            point_required as pointQuery,
+            point_number as pointNumber,
+            point_description as pointDescription,
+            status,
+            DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as createdAt,
+            DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updatedAt
+        FROM adminPoints
+        WHERE id = #{id}
+    </select>
+
+    <update id="addDataPoints" parameterType="com.explore.xianhuaback.DTO.AdminPoint.AdminPointDTO">
+        UPDATE adminPoints
+        SET
+            point_name = #{pointName},
+            point_required = #{pointQuery},
+            point_number = #{pointNumber},
+            point_description = #{pointDescription},
+            status=#{status},
+            updated_at = NOW(),
+            created_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="editDataPoints" parameterType="com.explore.xianhuaback.DTO.AdminPoint.AdminPointDTO">
+        UPDATE adminPoints
+        SET
+            point_name = #{pointName},
+            point_required = #{pointQuery},
+            point_number = #{pointNumber},
+            point_description = #{pointDescription},
+            status = #{status},
+            updated_at = NOW(),
+            created_at = NOW(),
+        WHERE id = #{id}
+    </update>
+
+</mapper>

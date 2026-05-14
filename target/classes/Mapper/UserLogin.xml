@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.explore.xianhuaback.Mapper.user.LoginUserMapper">
+
+    <insert id="insertLoginUser" >
+        insert into user(
+                         open_id,
+                         phone,
+                         nick_name,
+                         avatar_url,
+                         total_points,
+                         total_order_count,
+                         status,
+                         is_deleted,
+                         create_time,
+                         update_time
+                         )
+        values (
+                #{openId},
+                #{phone},
+                #{nickName},
+                #{avatarUrl},
+                #{totalPoints},
+                #{totalOrderCount},
+                #{status},
+                #{isDeleted},
+                #{createTime},
+                #{updateTime}
+                )
+    </insert>
+</mapper>

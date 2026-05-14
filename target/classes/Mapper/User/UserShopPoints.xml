@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.explore.xianhuaback.Mapper.user.ShopUserPointsMapper">
+
+
+<!--    //这里都要进行返回数据的情况要进行解决-->
+    <select id="getUserPointsWithAdmin" resultType="com.explore.xianhuaback.Entity.UserShopPoints.UserPurchasePointsVO">
+        SELECT
+            up.id,
+            up.user_id,
+            up.admin_points_id,
+            up.status,
+            up.expire_days,
+            up.expire_time,
+            up.validity_end,
+            up.created_at,
+            ap.image_url,
+            ap.point_name,
+            ap.point_required,
+            ap.point_description
+        FROM user_purchase_points up
+                 LEFT JOIN adminpoints ap ON up.admin_points_id = ap.id
+        WHERE up.user_id = #{userId}
+    </select>
+
+
+    <insert id="insertShopPoints" >
+        INSERT INTO user_purchase_points (
+            user_id,
+            admin_points_id,
+            status,
+            expire_days,
+            expire_time,
+            validity_end,
+            created_at,
+            updated_at
+        ) VALUES (
+                     #{userId},
+                     #{adminPointsId},
+                     #{status},
+                     #{expireDays},
+                     #{expireTime},
+                     #{validityEnd},
+                     NOW(),
+                     NOW()
+                 )
+    </insert>
+</mapper>
