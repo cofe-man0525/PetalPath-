@@ -18,6 +18,18 @@ Roso 后端系统
   |-- 数据统计：销售额、订单数、热销商品、用户增长、活动报名
 
 
+<img width="1919" height="1020" alt="eb66df5f6906c523dbc007d30d5a1697" src="https://github.com/user-attachments/assets/315b0fa7-76c1-4b90-a0a7-8a3332f88585" />
+<img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/4685f7f1-370b-46f6-8eb8-5028fc695913" />
+
+<img width="1919" height="1013" alt="image" src="https://github.com/user-attachments/assets/36262031-e4a6-425f-9f4e-129040fec4d5" />
+
+<img width="1919" height="1019" alt="image" src="https://github.com/user-attachments/assets/e8364a6e-3c2f-4ab8-b12b-c50203192ee4" />
+
+
+<img width="1919" height="1021" alt="image" src="https://github.com/user-attachments/assets/0b6ee0d1-8548-474a-866e-2af8f7229b56" />
+
+<img width="1908" height="1015" alt="image" src="https://github.com/user-attachments/assets/a6dbdd31-d086-41fc-ad39-eb6b51fa6963" />
+
 
 | 技术 | 项目中承担的作用 | 解决的问题 |
 |------|----------------|-----------|
