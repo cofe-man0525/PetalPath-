@@ -95,3 +95,45 @@ MySQL 配置表 + Redis 缓存，支持店铺/预约/积分等规则动态配置
 
 ### 4.17 工程规范模块
 全局异常处理、统一返回结果、Jakarta Validation 参数校验、Knife4j 接口文档、Docker Compose 一键启动。
+
+
+数据库核心表:
+
+表名	作用
+user	用户基础信息
+admin	管理员信息
+user_address	用户地址
+goods	鲜花商品
+goods_image	商品图片
+cart	购物车
+order_info	订单主表
+order_item	订单明细
+payment_record	支付流水
+coupon	优惠券/积分券
+user_coupon	用户已兑换优惠券
+sign_record	签到记录
+activity	活动信息
+user_activity	活动报名记录
+appointment	预约记录
+message	消息通知
+system_setting	系统配置
+operation_log	操作日志
+seckill_goods	秒杀商品
+seckill_order	秒杀订单
+ai_chat_record	AI 对话记录
+
+
+项目描述：
+基于 Spring Boot 3 + Java 17 开发的鲜花服务平台后端系统，统一支撑微信小程序用户端和 Vue 商家后台。
+系统支持微信登录、商品管理、购物车、订单支付、地址管理、积分签到、优惠券兑换、活动报名、预约排队、秒杀抢购、AI 鲜花推荐、消息通知和商家数据看板等功能。后端采用 MyBatis + MySQL 持久化业务数据，Sa-Token + Redis 实现登录鉴权，RabbitMQ 处理预约、支付、通知等异步任务，WebSocket 实现实时消息推送，七牛云管理图片资源，并接入微信支付 V3 和 AI 服务。
+
+技术亮点：
+1. 基于 Sa-Token + Redis 实现用户端和商家端统一鉴权，通过拦截器统一校验接口访问权限。
+2. 封装 Redis 缓存工具类，支持缓存回填、空值缓存、互斥锁重建缓存和列表缓存，降低热点数据访问数据库的压力。
+3. 设计 Redis/Redisson + RabbitMQ 的预约排队机制，对预约请求进行容量限制、重复校验和异步落库，并通过 WebSocket 实时推送预约结果。
+4. 支付模块接入微信支付 V3，使用订单状态机、支付流水表、回调验签和幂等处理保证支付流程可靠性。
+5. 使用 RabbitMQ 延迟队列实现订单超时自动关闭，避免未支付订单长期占用库存。
+6. 积分兑换和秒杀模块使用 Redis Lua 实现库存原子扣减，并结合唯一索引和数据库事务防止超发和重复兑换。
+7. 基于 RabbitMQ + WebSocket 构建消息中心，在支付成功、预约成功、活动报名等场景实时通知用户端和商家端。
+8. 接入七牛云对象存储，实现商品、活动、积分券图片上传、替换和删除。
+9. 集成 AI 推荐与运营助手，根据用户预算、节日和送礼对象生成鲜花推荐和祝福语，并支持商家端运营文案生成。
